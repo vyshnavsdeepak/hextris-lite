@@ -1,3 +1,5 @@
+[![Hextris Lite](https://raw.githubusercontent.com/attogram/attogram-docs/master/hextris-lite/hextris-lite.png)](https://github.com/attogram/hextris-lite)
+
 # Hextris Lite
 
 Hextris is an amazingly great open source game.
@@ -34,6 +36,11 @@ Nothing but the game.
 
 Enjoy.
 
-<https://github.com/attogram/hextris-lite>
+## Play Now
 
-[![Hextris Lite](images/1-opengraph.png)](https://github.com/attogram/hextris-lite)
+* <https://attogram.github.io/hextris-lite/>
+* <https://fosiper.com/games/hextris-lite/>
+
+## Get the source
+
+* <https://github.com/attogram/hextris-lite>
