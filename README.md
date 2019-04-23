@@ -24,9 +24,16 @@ No trojan javascript miners.
 
 No social media buttons.
 
-No extra marketing and publicity javascript libraries.
+No analytics scripts.
+
+No web bugs.
+
+No marketing and publicity javascript libraries.
 
 Nothing but the game.
 
 Enjoy.
 
+<https://github.com/attogram/hextris-lite>
+
+[![Hextris Lite](images/1-opengraph.png)](https://github.com/attogram/hextris-lite)
