@@ -337,6 +337,9 @@ function isInfringing(hex) {
 function checkGameOver() {
 	for (var i = 0; i < MainHex.sides; i++) {
 		if (isInfringing(MainHex)) {
+			if (highscores.indexOf(score) == -1) {
+				highscores.push(score);
+			}
 			writeHighScores();
 			gameOverDisplay();
 			return true;
