@@ -1,38 +1,32 @@
-Hextris
-==========
+# Hextris Lite
 
-<img src="images/twitter-opengraph.png" width="100px"><br>
+Hextris is an amazingly great open source game.
+The original authors deserve massive credit for creating
+such an enjoyable game, and even more credit for 
+releasing the game under the GNU General Public License.
 
-An addictive puzzle game inspired by Tetris. Play it at [www.hextris.io](http://www.hextris.io).
+But ...
 
-By:
- - Logan Engstrom ([@lengstrom](http://loganengstrom.com/))
- - Garrett Finucane ([@garrettdreyfus](http://github.com/garrettdreyfus))
- - Noah Moroze ([@nmoroze](http://github.com/nmoroze))
- - Michael Yang ([@themichaelyang](http://github.com/themichaelyang))
+Hextris now has a massive problem.
 
-# Contributions
-Please submit pull requests to the branch `clay-improvements`.
+The maintainers of the original Hextris github repository made a _conscious decision_
+to add a trojan javascript miner (`Trojan:JS/CoinHive.B`) into the Hextris code.
 
-# About
-Hextris was created by a group of high school friends in 2014.
+The ethical implications are profoundly troubling.
 
-## Press kit
+As such, the Attogram Project has forked the original Hextris repository
+and created **Hextris Lite**.
 
-http://hextris.github.io/presskit/info.html
+The goal of **Hextris Lite** is to deliver a fully playable Hextris game
+with absolutely nothing extra.   
 
-## License
-Copyright (C) 2018 Logan Engstrom
+No trojan javascript miners.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+No social media buttons.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+No extra marketing and publicity javascript libraries.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+Nothing but the game.
+
+Enjoy.
+
