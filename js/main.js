@@ -373,7 +373,7 @@ function showHelp() {
 		+ (settings.platform != 'mobile'
 			? ' Press the down arrow to speed up the block falling'
 			: '')
-		+ " </p><p>Clear blocks and get points by making 3 or more blocks of the same color touch.</p>"
+		+ "</p><p>Clear blocks and get points by making 3 or more blocks of the same color touch.</p>"
 		+ "<p>Time left before your combo streak disappears is indicated by "
 		+ "<span style='color:#f1c40f;'>the</span> <span style='color:#e74c3c'>colored</span> "
 		+ "<span style='color:#3498db'>lines</span> <span style='color:#2ecc71'>on</span> the outer hexagon</p>"
@@ -383,7 +383,7 @@ function showHelp() {
 		+ "<br />Brought to you by <a href='https://github.com/attogram' target='_blank'>The Attogram Project</a>"
 		+ "<br />License: GNU General Public License v3 or later</p>"
 		+ "<p>Forked from the original Hextris"
-		+ "<br />by <a href='https://loganengstrom.com' target='_blank'>Logan Engstrom</a>"
+		+ "<br />by <a href='http://loganengstrom.com' target='_blank'>Logan Engstrom</a>"
 		+ " &amp; <a href='https://github.com/garrettdreyfus' target='_blank'>Garrett Finucane</a>"
 		+ "<br />License: GNU General Public License v3 or later</p>");
 
