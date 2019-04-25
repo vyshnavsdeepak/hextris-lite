@@ -80,7 +80,7 @@ function drawScoreboard() {
 		);
 		renderText(
 			trueCanvas.width / 2 + gdx + 6 * settings.scale,
-			trueCanvas.height / 2 + gdy - 155 * settings.scale,
+			trueCanvas.height / 2.1 + gdy - 155 * settings.scale,
 			142,
 			"#2c3e50",
 			"Hextris"

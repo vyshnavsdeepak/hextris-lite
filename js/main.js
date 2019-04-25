@@ -1,5 +1,5 @@
 
-var hextris_lite_version = '2.0.1';
+var hextris_lite_version = '2.0.2';
 
 function scaleCanvas() {
 	canvas.width = $(window).width();
