@@ -31,10 +31,6 @@
 	-ms-transform:translate(-50%, -50%);
     display:none;
 }
-.tweet {
-	font-size:2rem;
-	color:#4099FF;
-}
 @media only screen and (min-device-width:320px) and (max-device-width:480px) {
 	.tweet{
 		font-size:1rem;
@@ -54,37 +50,30 @@ a {
 	text-align:center;
 	width:calc(33% - 1.25vmin);
 }
-
 #title {
 	color:#ecf0f1;
 	font-size:6vmin;
 }
-
 #score {
 	font-size:4vmin;
 	text-align:center;
 	width:30%;
 }
-
 #highscores {
 	text-align:center;
 	list-style:none;
 }
-
 .not-visible {
 	display:none;
 }
-
 button {
 	color:#ecf0f1;
 	background-color:rgba(0,0,0,0);
 	border:0;
 }
-
 button:focus {
 	outline:0;
 }
-
 #openSideBar {
 	position:fixed;
 	margin-top:6px;
@@ -96,10 +85,7 @@ button:focus {
 	cursor:pointer;
 	top:0;
 	left:0;
-
 }
-
-
 #pauseBtn {
 	display:none;
 	position:fixed;
@@ -114,7 +100,6 @@ button:focus {
 	bottom:0;
 	z-index:99;
 }
-
 #restartBtn {
 	display:none;
 	position:fixed;
@@ -137,7 +122,6 @@ button:focus {
 	z-index:99999999;
 	cursor:pointer;
 }
-
 #helpScreen {
 	height:100%;
 	width:100%;
@@ -151,7 +135,6 @@ button:focus {
 	color:#232323;
 	background-color:rgba(236,240,241,1);
 }
-
 #colorBlindBtn {
 	position:absolute;
 	width:120px;
@@ -164,7 +147,6 @@ button:focus {
 	color:#232323;
 	cursor:pointer;
 }
-
 #inst_main_body {
 	padding:0px;
 	font-size:1.2em;
@@ -179,11 +161,9 @@ button:focus {
 	-moz-transform:translate(-50%, -50%);
 	-ms-transform:translate(-50%, -50%);
 }
-
 #inst_main_body > a {
 	font-weight:bold;
 }
-
 #inst_main_body > hr {
 	width:100%;
 	color:#232323;
@@ -191,23 +171,19 @@ button:focus {
 	height:1px;
 	border:0;
 }
-
 #inst_main_body > p {
 	margin-bottom:15px;
 }
-
 #instructions_head {
 	text-align:center;
 	font-size:1.5em;
 	padding-bottom:4px;
 }
 
-
 #highScoreInGameTextHeader {
 	color: #bdc3c7;
 	width:100%;
 }
-
 #highScoreInGameText {
 	position: absolute;
 	top:10px;
@@ -216,14 +192,12 @@ button:focus {
 	left:50%;
 	margin-left:-100px;
 }
-
 #currentHighScore {
 	color: #2c3e50;
 	width:100%;
 	margin-top: -5px;
 	font-size:2em;
 }
-
 @media only screen and (max-device-width:480px) {
 	#helpScreen {
 		position:fixed;
@@ -258,7 +232,6 @@ button:focus {
 		height:60px;
 	}
 }
-
 .overlay {
 	position:absolute;
 	height:20%;
@@ -271,28 +244,23 @@ button:focus {
 	color:#232323;
 	text-align:center;
 }
-
 .helpText {
 	z-index:3001;
 }
-
 .centeredHeader {
 	font-size:5vw; 
 	text-align:center;
 	line-height:4rem;
 }
-
 .centeredSubHeader {
 	font-size:2.2rem; 
 	line-height:1em;
 	text-align:center;
 }
-
 .centeredSubSubHeader {
 	font-size:1.4rem; 
 	text-align:center;
 }
-
 #buttonCont {
 	position:absolute; 
 	left:50%;
@@ -303,7 +271,6 @@ button:focus {
 	-moz-transform:translate(-50%, 0%);
 	-ms-transform:translate(-50%, 0%);
 }
-
 @media only screen and (orientation:landscape) {
 	#buttonCont {
 		bottom:calc(50vh - 19vh - 36px);
@@ -312,7 +279,6 @@ button:focus {
 		top:calc(50vh - 11vh);
 	}
 }
-
 @media only screen and (orientation:portrait) {
 	#buttonCont {
 		bottom:calc(50vh - 19vw - 36px);
@@ -321,7 +287,6 @@ button:focus {
 		top:calc(50vh - 11vw);
 	}
 }
-
 @media only screen and (min-device-width:320px) and (max-device-width:600px) {
 	.centeredHeader {
 		font-size:2rem; 
@@ -357,22 +322,18 @@ button:focus {
 .blur {
 	opacity:0.1;
 }
-
 * {
 	padding:0;
 	margin:0;
 }
-
 body {
 	color:#ecf0f1;
 	font-family:'Exo', sans-serif;
 	background-color:#ecf0f1;
 }
-
 #clickToExit {
 	cursor:pointer;
 }
-
 #canvas {
 	transition:all 0.5s ease;
 	position:absolute;
@@ -388,11 +349,9 @@ body {
 	margin-top:20px;
 	color:#2c3e50;
 }
-
 #gameoverscreen {
 	/*display:none;*/
 }
-
 #restart{
 	display:none;
 	cursor:pointer !important;
@@ -407,22 +366,6 @@ body {
 	-ms-transform:translate(-50%, 0%);
 	margin-bottom:-3.5px;
 }
-
-#socialShare{
-	display:none;
-	margin:0;
-	padding:0;
-	bottom:0;
-	margin-bottom: 6.5px;
-	position:absolute;
-	left:calc(50% + 30px);
-	transform:translate(-50%, 0%);
-	-webkit-transform:translate(-50%, 0%);
-	-moz-transform:translate(-50%, 0%);
-	-ms-transform:translate(-50%, 0%);
-    padding-bottom: 2px;
-}
-
 .unselectable {
 	-webkit-touch-callout:none;
 	-webkit-user-select:none;
@@ -448,52 +391,40 @@ body {
 	font-weight:light;
 	src:url("./fonts/Exo2-ExtraLight.otf") format("opentype");
 }
-
 @font-face {
 	font-family:Exo;
 	src:url("./fonts/Exo2-Regular.otf") format("opentype");
 }
-
 @font-face {
 	font-family:Exo;
 	font-weight:bold;
 	src:url("./fonts/Exo2-SemiBold.otf") format("opentype");
 }
-
 .GOTitle {
 	font-weight:bold;
 	font-size:24.2000px;
 }
-
 .scoreNum {
 	font-weight:normal ! important;
 }
-
 #cScore {
 	font-size:60.5000px;
 	font-weight:light;
 	margin-bottom:5px;
 	margin-top:-10px;
 }
-
 #highScoresTitle {
 	margin-bottom:2px;
 }
-
 .score {
 	font-weight:light;
 	line-height:18px;
 }
-
-
-
-
 #bottomContainer {
 	position:absolute;
 	width:100%;
 	bottom:0px;
 }
-
 #androidBadge {
 	position:absolute;
 	height:41px;
@@ -504,7 +435,6 @@ body {
 	-moz-transform:translate(calc(-50% - 4px), -1px);
 	-ms-transform:translate(calc(-50% - 4px), -1px);
 }
-
 #iOSBadge {
 	margin-top:5px;
 	position:absolute;
@@ -514,7 +444,6 @@ body {
 	-moz-transform:translate(calc(-50% - 4px), 0%);
 	-ms-transform:translate(calc(-50% - 4px), 0%);
 }
-
 #authors {
 	position:absolute;
 	width:200px;
