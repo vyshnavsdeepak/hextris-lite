@@ -1,7 +1,8 @@
-// Hextris Lite
-// https://github.com/attogram/hextris-lite
+// Hextris Lite - https://github.com/attogram/hextris-lite
 
-var hextris_lite_version = '2.1.0';
+var hextris_lite_version = '2.1.1';
+var pausable = true;
+var spd = 1;
 
 // Hex.js
 
@@ -31,7 +32,6 @@ function Hex(sideLength) {
     for (var i = 0; i < this.sides; i++) {
         this.blocks.push([]);
     }
-
     this.shake = function(obj) { //lane as in particle lane
         var angle = 30 + obj.lane * 60;
         angle *= Math.PI / 180;
@@ -48,7 +48,6 @@ function Hex(sideLength) {
             }
         }
     };
-
     this.addBlock = function(block) {
         if (!(gameState == 1 || gameState === 0)) return;
         block.settled = 1;
@@ -62,12 +61,10 @@ function Hex(sideLength) {
         block.attachedLane = lane;
         block.checked = 1;
     };
-
     this.doesBlockCollide = function(block, position, tArr) {
         if (block.settled) {
             return;
         }
-
         if (position !== undefined) {
             arr = tArr;
             if (position <= 0) {
@@ -93,10 +90,8 @@ function Hex(sideLength) {
         } else {
             var lane = this.sides - block.fallingLane;//  -this.position;
             lane += this.position;
-
             lane = (lane+this.sides) % this.sides;
             var arr = this.blocks[lane];
-
             if (arr.length > 0) {
                 if (block.distFromHex + block.iter * this.dt * settings.scale - arr[arr.length - 1].distFromHex - arr[arr.length - 1].height <= 0) {
                     block.distFromHex = arr[arr.length - 1].distFromHex + arr[arr.length - 1].height;
@@ -118,32 +113,27 @@ function Hex(sideLength) {
         if (!history[this.ct]) {
             history[this.ct] = {};
         }
-
         if (!history[this.ct].rotate) {
             history[this.ct].rotate = steps;
         }
         else {
             history[this.ct].rotate += steps;
         }
-
         while (this.position < 0) {
             this.position += 6;
         }
-
         this.position = this.position % this.sides;
         this.blocks.forEach(function(blocks) {
             blocks.forEach(function(block) {
                 block.targetAngle = block.targetAngle - steps * 60;
             });
         });
-
         this.targetAngle = this.targetAngle - steps * 60;
         this.lastRotate = Date.now();
     };
 
     this.draw = function() {
         this.x = trueCanvas.width/2;
-
         if (gameState != -2) {
             this.y = trueCanvas.height/2;
         }
@@ -159,7 +149,6 @@ function Hex(sideLength) {
         else if(this.angle < this.targetAngle) {
             this.angularVelocity += angularVelocityConst * this.dt;
         }
-
         if (Math.abs(this.angle - this.targetAngle + this.angularVelocity) <= Math.abs(this.angularVelocity)) { //do better soon
             this.angle = this.targetAngle;
             this.angularVelocity = 0;
@@ -167,7 +156,6 @@ function Hex(sideLength) {
         else {
             this.angle += this.angularVelocity;
         }
-
         drawPolygon(this.x + gdx, this.y + gdy + this.dy, this.sides, this.sideLength, this.angle,arrayToColor(this.fillColor) , 0, 'rgba(0,0,0,0)');
     };
 }
@@ -181,32 +169,26 @@ function arrayToColor(arr){
 function scaleCanvas() {
     canvas.width = $(window).width();
     canvas.height = $(window).height();
-
     if (canvas.height > canvas.width) {
         settings.scale = (canvas.width / 800) * settings.baseScale;
     } else {
         settings.scale = (canvas.height / 800) * settings.baseScale;
     }
-
     trueCanvas = {
         width: canvas.width,
         height: canvas.height
     };
-
     if (window.devicePixelRatio) {
         var cw = $("#canvas").attr('width');
         var ch = $("#canvas").attr('height');
-
         $("#canvas").attr('width', cw * window.devicePixelRatio);
         $("#canvas").attr('height', ch * window.devicePixelRatio);
         $("#canvas").css('width', cw);
         $("#canvas").css('height', ch);
-
         trueCanvas = {
             width: cw,
             height: ch
         };
-
         ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     }
     setBottomContainer();
@@ -249,7 +231,6 @@ function resumeGame() {
             $('#openSideBar').fadeOut(150, "linear");
         }
     }, 7000);
-
     checkVisualElements(0);
 }
 
@@ -309,7 +290,6 @@ function init(b) {
     $("#restartBtn").hide();
     $("#pauseBtn").show();
     if (saveState.hex !== undefined) gameState = 1;
-
     settings.blockHeight = settings.baseBlockHeight * settings.scale;
     settings.hexWidth = settings.baseHexWidth * settings.scale;
     MainHex = saveState.hex || new Hex(settings.hexWidth);
@@ -317,7 +297,6 @@ function init(b) {
         MainHex.playThrough += 1;
     }
     MainHex.sideLength = settings.hexWidth;
-
     var i;
     var block;
     if (saveState.blocks) {
@@ -326,7 +305,6 @@ function init(b) {
                 o.color = rgbToHex[o.color];
             }
         });
-
         for (i = 0; i < saveState.blocks.length; i++) {
             block = saveState.blocks[i];
             blocks.push(block);
@@ -334,18 +312,15 @@ function init(b) {
     } else {
         blocks = [];
     }
-
     gdx = saveState.gdx || 0;
     gdy = saveState.gdy || 0;
     comboTime = saveState.comboTime || 0;
-
     for (i = 0; i < MainHex.blocks.length; i++) {
         for (var j = 0; j < MainHex.blocks[i].length; j++) {
             MainHex.blocks[i][j].height = settings.blockHeight;
             MainHex.blocks[i][j].settled = 0;
         }
     }
-
     MainHex.blocks.map(function(i) {
         i.map(function(o) {
             if (rgbToHex[o.color]) {
@@ -353,12 +328,9 @@ function init(b) {
             }
         });
     });
-
     MainHex.y = -100;
-
     startTime = Date.now();
     waveone = saveState.wavegen || new waveGen(MainHex);
-
     MainHex.texts = []; //clear texts
     MainHex.delay = 15;
     hideText();
@@ -369,13 +341,11 @@ function addNewBlock(blocklane, color, iter, distFromHex, settled) { //last two 
     if (!history[MainHex.ct]) {
         history[MainHex.ct] = {};
     }
-
     history[MainHex.ct].block = {
         blocklane: blocklane,
         color: color,
         iter: iter
     };
-
     if (distFromHex) {
         history[MainHex.ct].distFromHex = distFromHex;
     }
@@ -398,16 +368,12 @@ function setStartScreen() {
     } else {
         importing = 1;
     }
-
     $('#pauseBtn').hide();
     $('#restartBtn').hide();
     $('#startBtn').show();
-
     gameState = 0;
     requestAnimFrame(animLoop);
 }
-
-var spd = 1;
 
 function animLoop() {
     switch (gameState) {
@@ -419,7 +385,6 @@ function animLoop() {
             if (spd > 1) {
                 dt *= spd;
             }
-
             if(gameState == 1 ){
                 if(!MainHex.delay) {
                     update(dt);
@@ -428,41 +393,32 @@ function animLoop() {
                     MainHex.delay--;
                 }
             }
-
             lastTime = now;
-
             if (checkGameOver() && !importing) {
                 var saveState = localStorage.getItem("saveState") || "{}";
                 saveState = JSONfn.parse(saveState);
                 gameState = 2;
-
                 setTimeout(function() {
                     enableRestart();
                 }, 150);
-
                 if ($('#helpScreen').is(':visible')) {
                     $('#helpScreen').fadeOut(150, "linear");
                 }
-
                 if ($('#pauseBtn').is(':visible')) $('#pauseBtn').fadeOut(150, "linear");
                 if ($('#restartBtn').is(':visible')) $('#restartBtn').fadeOut(150, "linear");
                 if ($('#openSideBar').is(':visible')) $('.openSideBar').fadeOut(150, "linear");
-
                 canRestart = 0;
                 clearSaveState();
             }
             break;
-
         case 0:
             requestAnimFrame(animLoop);
             render();
             break;
-
         case -1:
             requestAnimFrame(animLoop);
             render();
             break;
-
         case 2:
             var now = Date.now();
             var dt = (now - lastTime)/16.666 * rush;
@@ -471,26 +427,22 @@ function animLoop() {
             render();
             lastTime = now;
             break;
-
         case 3:
             requestAnimFrame(animLoop);
             fadeOutObjectsOnScreen();
             render();
             break;
-
         case 4:
             setTimeout(function() {
                 initialize(1);
             }, 1);
             render();
             return;
-
         default:
             initialize();
             setStartScreen();
             break;
     }
-
     if (!(gameState == 1 || gameState == 2)) {
         lastTime = Date.now();
     }
@@ -506,7 +458,6 @@ function isInfringing(hex) {
         for (var j = 0; j < hex.blocks[i].length; j++) {
             subTotal += hex.blocks[i][j].deleted;
         }
-
         if (hex.blocks[i].length - subTotal > settings.rows) {
             return true;
         }
@@ -540,7 +491,6 @@ function showHelp() {
             $('#fork-ribbon').fadeIn(150, 'linear');
         }
     }
-
     $("#inst_main_body").html("<div id = 'instructions_head'>HOW TO PLAY</div>"
         + "<p>The goal of Hextris is to stop blocks from leaving the inside of the outer gray hexagon.</p><p>"
         + (settings.platform != 'mobile'
@@ -563,15 +513,12 @@ function showHelp() {
         + "<br />by <a href='http://loganengstrom.com' target='_blank'>Logan Engstrom</a>"
         + " &amp; <a href='https://github.com/garrettdreyfus' target='_blank'>Garrett Finucane</a>"
         + "<br />License: GNU General Public License v3 or later</p>");
-
     if (gameState == 1) {
         pause();
     }
-
     if($("#pauseBtn").attr('src') == "./images/btn_pause.svg" && gameState != 0 && !infobuttonfading) {
         return;
     }
-
     $("#openSideBar").fadeIn(150,"linear");
     $('#helpScreen').fadeToggle(150, "linear");
 }
@@ -586,7 +533,6 @@ function blockDestroyed() {
     } else {
         waveone.nextGen = 600;
     }
-
     if (waveone.difficulty < 35) {
         waveone.difficulty += 0.085 * settings.speedModifier;
     } else {
@@ -614,7 +560,6 @@ function waveGen(hex) {
             }
         }
     };
-
     this.randomGeneration = function() {
         if (this.dt - this.lastGen > this.nextGen) {
             this.ct++;
@@ -643,7 +588,6 @@ function waveGen(hex) {
             }
         }
     };
-
     this.computeDifficulty = function() {
         if (this.difficulty < 35) {
             var increment;
@@ -654,18 +598,15 @@ function waveGen(hex) {
             } else {
                 increment = (this.dt - this.last) / (90000000) * settings.speedModifier;
             }
-
             this.difficulty += increment * (1/2);
         }
     };
-
     this.circleGeneration = function() {
         if (this.dt - this.lastGen > this.nextGen + 500) {
             var numColors = randInt(1, 4);
             if (numColors == 3) {
                 numColors = randInt(1, 4);
             }
-
             var colorList = [];
             nextLoop: for (var i = 0; i < numColors; i++) {
                 var q = randInt(0, colors.length);
@@ -677,17 +618,14 @@ function waveGen(hex) {
                 }
                 colorList.push(colors[q]);
             }
-
             for (var i = 0; i < MainHex.sides; i++) {
                 addNewBlock(i, colorList[i % numColors], 1.5 + (this.difficulty / 15) * 3);
             }
-
             this.ct += 15;
             this.lastGen = this.dt;
             this.shouldChangePattern(1);
         }
     };
-
     this.halfCircleGeneration = function() {
         if (this.dt - this.lastGen > (this.nextGen + 500) / 2) {
             var numColors = randInt(1, 3);
@@ -696,18 +634,15 @@ function waveGen(hex) {
             if (numColors == 2) {
                 colorList = [c, colors[randInt(0, colors.length)], c];
             }
-
             var d = randInt(0, 6);
             for (var i = 0; i < 3; i++) {
                 addNewBlock((d + i) % 6, colorList[i], 1.5 + (this.difficulty / 15) * 3);
             }
-
             this.ct += 8;
             this.lastGen = this.dt;
             this.shouldChangePattern();
         }
     };
-
     this.crosswiseGeneration = function() {
         if (this.dt - this.lastGen > this.nextGen) {
             var ri = randInt(0, colors.length);
@@ -719,7 +654,6 @@ function waveGen(hex) {
             this.shouldChangePattern();
         }
     };
-
     this.spiralGeneration = function() {
         var dir = randInt(0, 2);
         if (this.dt - this.lastGen > this.nextGen * (2 / 3)) {
@@ -733,7 +667,6 @@ function waveGen(hex) {
             this.shouldChangePattern();
         }
     };
-
     this.doubleGeneration = function() {
         if (this.dt - this.lastGen > this.nextGen) {
             var i = randInt(0, colors.length);
@@ -744,12 +677,10 @@ function waveGen(hex) {
             this.shouldChangePattern();
         }
     };
-
     this.setRandom = function() {
         this.ct = 0;
         this.currentFunction = this.randomGeneration;
     };
-
     this.shouldChangePattern = function(x) {
         if (x) {
             var q = randInt(0, 4);
@@ -771,12 +702,9 @@ function waveGen(hex) {
                 return 1;
             }
         }
-
         return 0;
     };
-
     // rest of generation functions
-
     this.currentFunction = this.randomGeneration;
 }
 
@@ -792,7 +720,6 @@ function renderText(x, y, fontSize, color, text, font) {
     if (!font) {
         var font = '20px Exo';
     }
-
     fontSize *= settings.scale;
     ctx.font = fontSize + font;
     ctx.textAlign = 'center';
@@ -901,7 +828,6 @@ function drawScoreboard() {
             score
         );
     }
-
     ctx.globalAlpha = 1;
 }
 
@@ -925,7 +851,6 @@ function drawPolygon(x, y, sides, radius, theta, fillColor, lineWidth, lineColor
         oldX = coords.x;
         oldY = coords.y;
     }
-
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
@@ -948,7 +873,6 @@ function showText(text) {
         'pausedOther': "<div class='centeredHeader unselectable'>Game Paused</div>",
         'start': "<div class='centeredHeader unselectable' style='line-height:80px;'>Press enter to start</div>"
     };
-
     if (text == 'paused') {
         if (settings.os == 'android') {
             text = 'pausedAndroid'
@@ -958,14 +882,12 @@ function showText(text) {
             text = 'pausedOther'
         }
     }
-
     if (text == 'gameover') {
         //Clay('client.share.any', {text: 'Think you can beat my score of '+ score + ' in Super Cool Game?'})
         $("#gameoverscreen").fadeIn();
     }
     $(".overlay").html(messages[text]);
     $(".overlay").fadeIn("1000", "swing");
-
 }
 
 function setMainMenu() {
@@ -1015,12 +937,10 @@ function updateHighScores (){
     $("#3place").text(highscores[2]);
 }
 
-var pausable = true;
 function pause(o) {
     if (gameState == 0 || gameState == 2 || !pausable) {
         return;
     }
-
     pausable = false;
     writeHighScores();
     var message;
@@ -1029,7 +949,6 @@ function pause(o) {
     } else {
         message = 'paused';
     }
-
     var c = document.getElementById("canvas");
     if (gameState == -1) {
         $('#fork-ribbon').fadeOut(300, 'linear');
@@ -1038,7 +957,6 @@ function pause(o) {
         if ($('#helpScreen').is(':visible')) {
             $('#helpScreen').fadeOut(300, "linear");
         }
-
         $("#pauseBtn").attr("src", "./images/btn_pause.svg");
         $('.helpText').fadeOut(300, 'linear');
         $('#overlay').fadeOut(300, 'linear');
@@ -1071,7 +989,6 @@ function rotatePoint(x, y, theta) {
     var thetaRad = theta * (Math.PI / 180);
     var rotX = Math.cos(thetaRad) * x - Math.sin(thetaRad) * y;
     var rotY = Math.sin(thetaRad) * x + Math.cos(thetaRad) * y;
-
     return {
         x: rotX,
         y: rotY
@@ -1086,7 +1003,6 @@ function randInt(min, max) {
 
 function exportSaveState() {
     var state = {};
-
     if(gameState == 1 || gameState == -1 || (gameState === 0 && localStorage.getItem('saveState') !== undefined)) {
         state = {
             hex: $.extend(true, {}, MainHex),
@@ -1097,24 +1013,18 @@ function exportSaveState() {
             gdy: gdy,
             comboTime:settings.comboTime
         };
-
         state.hex.blocks.map(function(a){
             for (var i = 0; i < a.length; i++) {
                 a[i] = $.extend(true, {}, a[i]);
             }
-
             a.map(descaleBlock);
         });
-
         for (var i = 0; i < state.blocks.length; i++) {
             state.blocks[i] = $.extend(true, {}, state.blocks[i]);
         }
-
         state.blocks.map(descaleBlock);
     }
-
     localStorage.setItem('highscores', JSON.stringify(highscores));
-
     return JSONfn.stringify(state);
 }
 
@@ -1192,7 +1102,6 @@ function search(twoD,oneD){
 
 function floodFill(hex, side, index, deleting) {
     if (hex.blocks[side] === undefined || hex.blocks[side][index] === undefined) return;
-
     //store the color
     var color = hex.blocks[side][index].color;
     //nested for loops for navigating the blocks
@@ -1244,7 +1153,6 @@ function consolidateBlocks(hex,side,index){
             deletedBlocks.push(hex.blocks[arr[0]][arr[1]]);
         }
     }
-
     // add scores
     var now = MainHex.ct;
     if(now - hex.lastCombo < settings.comboTime ){
@@ -1296,7 +1204,6 @@ function calcSide(startVertex,endVertex,fraction,offset){
     ctx.globalAlpha=1;
     ctx.beginPath();
     ctx.lineCap = "round";
-
     var radius = (settings.rows * settings.blockHeight) * (2/Math.sqrt(3)) + settings.hexWidth ;
     var halfRadius = radius/2;
     var triHeight = radius *(Math.sqrt(3)/2);
@@ -1348,7 +1255,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
     this.height = settings.blockHeight;
     //the lane which the block was shot from
     this.fallingLane = fallingLane;
-
     this.checked=0;
     //the angle at which the block falls
     this.angle = 90 - (30 + 60 * fallingLane);
@@ -1375,7 +1281,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
     this.attachedLane = 0;
     //distance from center hex
     this.distFromHex = distFromHex || settings.startDist * settings.scale ;
-
     this.incrementOpacity = function() {
         if (this.deleted) {
             //add shakes
@@ -1385,7 +1290,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
                 while (tLane < 0) {
                     tLane += MainHex.sides;
                 }
-
                 tLane %= MainHex.sides;
                 MainHex.shakes.push({lane:tLane, magnitude:3 * (window.devicePixelRatio ? window.devicePixelRatio : 1) * (settings.scale)});
             }
@@ -1401,7 +1305,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
             }
         }
     };
-
     this.getIndex = function (){
         //get the index of the block in its stack
         var parentArr = MainHex.blocks[this.attachedLane];
@@ -1411,24 +1314,20 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
             }
         }
     };
-
     this.draw = function(attached, index) {
         this.height = settings.blockHeight;
         if (Math.abs(settings.scale - settings.prevScale) > 0.000000001) {
             this.distFromHex *= (settings.scale/settings.prevScale);
         }
-
         this.incrementOpacity();
         if(attached === undefined)
             attached = false;
-
         if(this.angle > this.targetAngle) {
             this.angularVelocity -= angularVelocityConst * MainHex.dt;
         }
         else if(this.angle < this.targetAngle) {
             this.angularVelocity += angularVelocityConst * MainHex.dt;
         }
-
         if (Math.abs(this.angle - this.targetAngle + this.angularVelocity) <= Math.abs(this.angularVelocity)) { //do better soon
             this.angle = this.targetAngle;
             this.angularVelocity = 0;
@@ -1436,7 +1335,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
         else {
             this.angle += this.angularVelocity;
         }
-
         this.width = 2 * this.distFromHex / Math.sqrt(3);
         this.widthWide = 2 * (this.distFromHex + this.height) / Math.sqrt(3);
         //this.widthWide = this.width + this.height + 3;
@@ -1462,7 +1360,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
             p3 = rotatePoint(this.widthWide / 2, -this.height / 2, this.angle);
             p4 = rotatePoint(-this.widthWide / 2, -this.height / 2, this.angle);
         }
-
         if (this.deleted) {
             ctx.fillStyle = "#FFF";
         } else if (gameState === 0) {
@@ -1476,7 +1373,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
         else {
             ctx.fillStyle = this.color;
         }
-
         ctx.globalAlpha = this.opacity;
         var baseX = trueCanvas.width / 2 + Math.sin((this.angle) * (Math.PI / 180)) * (this.distFromHex + this.height / 2) + gdx;
         var baseY = trueCanvas.height / 2 - Math.cos((this.angle) * (Math.PI / 180)) * (this.distFromHex + this.height / 2) + gdy;
@@ -1488,7 +1384,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
         //ctx.lineTo(baseX + p1.x, baseY + p1.y);
         ctx.closePath();
         ctx.fill();
-
         if (this.tint) {
             if (this.opacity < 1) {
                 if (gameState == 1 || gameState==0) {
@@ -1498,7 +1393,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
                 this.iter = 2.25;
                 this.tint = 0;
             }
-
             ctx.fillStyle = "#FFF";
             ctx.globalAlpha = this.tint;
             ctx.beginPath();
@@ -1514,7 +1408,6 @@ function Block(fallingLane, color, iter, distFromHex, settled) {
                 this.tint = 0;
             }
         }
-
         ctx.globalAlpha = 1;
     };
 }
@@ -1528,13 +1421,10 @@ function findCenterOfBlocks(arr) {
         while (ang < 0) {
             ang += 360;
         }
-
         avgAngle += ang % 360;
     }
-
     avgDFH /= arr.length;
     avgAngle /= arr.length;
-
     return {
         x:trueCanvas.width/2 + Math.cos(avgAngle * (Math.PI / 180)) * avgDFH,
         y:trueCanvas.height/2 + Math.sin(avgAngle * (Math.PI / 180)) * avgDFH
@@ -1556,7 +1446,6 @@ function update(dt) {
     var i;
     var j;
     var block;
-
     var objectsToRemove = [];
     for (i = 0; i < blocks.length; i++) {
         MainHex.doesBlockCollide(blocks[i]);
@@ -1566,7 +1455,6 @@ function update(dt) {
             blocks[i].removed = 1;
         }
     }
-
     for (i = 0; i < MainHex.blocks.length; i++) {
         for (j = 0; j < MainHex.blocks[i].length; j++) {
             if (MainHex.blocks[i][j].checked ==1 ) {
@@ -1575,7 +1463,6 @@ function update(dt) {
             }
         }
     }
-
     for (i = 0; i < MainHex.blocks.length; i++) {
         lowestDeletedIndex = 99;
         for (j = 0; j < MainHex.blocks[i].length; j++) {
@@ -1587,14 +1474,12 @@ function update(dt) {
                 j--;
             }
         }
-
         if (lowestDeletedIndex < MainHex.blocks[i].length) {
             for (j = lowestDeletedIndex; j < MainHex.blocks[i].length; j++) {
                 MainHex.blocks[i][j].settled = 0;
             }
         }
     }
-
     for (i = 0; i < MainHex.blocks.length; i++) {
         for (j = 0; j < MainHex.blocks[i].length; j++) {
             block = MainHex.blocks[i][j];
@@ -1605,14 +1490,12 @@ function update(dt) {
             }
         }
     }
-
     for(i = 0; i < blocks.length;i++){
         if (blocks[i].removed == 1) {
             blocks.splice(i,1);
             i--;
         }
     }
-
     MainHex.ct += dt;
 }
 
@@ -1623,7 +1506,6 @@ function render() {
     if (gameState === 0) {
         grey = "rgb(220, 223, 225)";
     }
-
     ctx.clearRect(0, 0, trueCanvas.width, trueCanvas.height);
     clearGameBoard();
     if (gameState === 1 || gameState === 2 || gameState === -1 || gameState === 0) {
@@ -1635,7 +1517,6 @@ function render() {
         drawTimer();
         ctx.globalAlpha = 1;
     }
-
     var i;
     for (i = 0; i < MainHex.blocks.length; i++) {
         for (var j = 0; j < MainHex.blocks[i].length; j++) {
@@ -1646,12 +1527,10 @@ function render() {
     for (i = 0; i < blocks.length; i++) {
         blocks[i].draw();
     }
-
     MainHex.draw();
     if (gameState ==1 || gameState ==-1 || gameState === 0) {
         drawScoreboard();
     }
-
     for (i = 0; i < MainHex.texts.length; i++) {
         var alive = MainHex.texts[i].draw();
         if(!alive){
@@ -1659,27 +1538,22 @@ function render() {
             i--;
         }
     }
-
     if ((MainHex.ct < 650 && (gameState !== 0) && !MainHex.playThrough)) {
         if (MainHex.ct > (650 - 50)) {
             ctx.globalAlpha = (50 - (MainHex.ct - (650 - 50)))/50;
         }
-
         if (MainHex.ct < 50) {
             ctx.globalAlpha = (MainHex.ct)/50;
         }
-
         renderBeginningText();
         ctx.globalAlpha = 1;
     }
-
     if (gameState == -1) {
         ctx.globalAlpha = 0.9;
         ctx.fillStyle = 'rgb(236,240,241)';
         ctx.fillRect(0, 0, trueCanvas.width, trueCanvas.height);
         ctx.globalAlpha = 1;
     }
-
     settings.prevScale = settings.scale;
     settings.hexWidth = settings.baseHexWidth * settings.scale;
     settings.blockHeight = settings.baseBlockHeight * settings.scale;
@@ -1708,7 +1582,6 @@ function renderBeginningText() {
     if (!mob) {
         drawKey("",(trueCanvas.width)/2 + 2 * settings.scale-2.5,upperheight+38*settings.scale);
     }
-
     renderText((trueCanvas.width)/2 + 2 * settings.scale,lowerheight,fontSize, '#2c3e50', score_text);
 }
 
@@ -1747,7 +1620,6 @@ function addKeyListeners() {
             }
         }
     });
-
     keypress.register_combo({
         keys: "right",
         on_keydown: function() {
@@ -1772,13 +1644,11 @@ function addKeyListeners() {
         on_keyup:function(){
             if (MainHex && gameState !== 0){
                 //speed up block temporarily
-
                 window.rush /=4;
                 settings.speedUpKeyHeld = false;
             }
         }
     });
-
     keypress.register_combo({
         keys: "a",
         on_keydown: function() {
@@ -1787,7 +1657,6 @@ function addKeyListeners() {
             }
         }
     });
-
     keypress.register_combo({
         keys: "d",
         on_keydown: function() {
@@ -1796,7 +1665,6 @@ function addKeyListeners() {
             }
         }
     });
-
     keypress.register_combo({
         keys: "s",
         on_keydown: function() {
@@ -1823,19 +1691,16 @@ function addKeyListeners() {
         keys: "p",
         on_keydown: function(){pause();}
     });
-
     keypress.register_combo({
         keys: "space",
         on_keydown: function(){pause();}
     });
-
     keypress.register_combo({
         keys: "q",
         on_keydown: function() {
             if (devMode) toggleDevTools();
         }
     });
-
     keypress.register_combo({
         keys: "enter",
         on_keydown: function() {
@@ -1851,36 +1716,30 @@ function addKeyListeners() {
             }
         }
     });
-
     $("#pauseBtn").on('touchstart mousedown', function() {
         if (gameState != 1 && gameState != -1) {
             return;
         }
-
         if ($('#helpScreen').is(":visible")) {
             $('#helpScreen').fadeOut(150, "linear");
         }
         pause();
         return false;
     });
-
     $("#colorBlindBtn").on('touchstart mousedown', function() {
         window.colors = ["#8e44ad", "#f1c40f", "#3498db", "#d35400"];
-
         window.hexColorsToTintedColors = {
             "#8e44ad": "rgb(229,152,102)",
             "#f1c40f": "rgb(246,223,133)",
             "#3498db": "rgb(151,201,235)",
             "#d35400": "rgb(210,180,222)"
         };
-
         window.rgbToHex = {
             "rgb(142,68,173)": "#8e44ad",
             "rgb(241,196,15)": "#f1c40f",
             "rgb(52,152,219)": "#3498db",
             "rgb(211,84,0)": "#d35400"
         };
-
         window.rgbColorsToTintedColors = {
             "rgb(142,68,173)": "rgb(229,152,102)",
             "rgb(241,196,15)": "rgb(246,223,133)",
@@ -1888,15 +1747,12 @@ function addKeyListeners() {
             "rgb(46,204,113)": "rgb(210,180,222)"
         };
     });
-
-
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $("#restart").on('touchstart', function() {
             init();
             canRestart = false;
             $("#gameoverscreen").fadeOut();
         });
-
     }
     else {
         $("#restart").on('mousedown', function() {
@@ -1904,7 +1760,6 @@ function addKeyListeners() {
             canRestart = false;
             $("#gameoverscreen").fadeOut();
         });
-
     }
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         $("#restartBtn").on('touchstart', function() {
@@ -1912,7 +1767,6 @@ function addKeyListeners() {
             canRestart = false;
             $("#gameoverscreen").fadeOut();
         });
-
     }
     else {
         $("#restartBtn").on('mousedown', function() {
@@ -1920,18 +1774,13 @@ function addKeyListeners() {
             canRestart = false;
             $("#gameoverscreen").fadeOut();
         });
-
-
     }
-
 }
 
 function inside (point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-
     var x = point[0], y = point[1];
-
     var inside = false;
     for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
         var xi = vs[i][0], yi = vs[i][1];
@@ -1941,7 +1790,6 @@ function inside (point, vs) {
             && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
         if (intersect) inside = !inside;
     }
-
     return inside;
 };
 
@@ -1962,11 +1810,9 @@ function handleClickTap(x,y) {
         [halfRadius,triHeight]];
     Vertexes = Vertexes.map(function(coord){
         return [coord[0] + trueCanvas.width/2, coord[1] + trueCanvas.height/2]});
-
     if (!MainHex || gameState === 0 || gameState==-1) {
         return;
     }
-
     if (x < window.innerWidth/2) {
         MainHex.rotate(1);
     }
@@ -1976,10 +1822,6 @@ function handleClickTap(x,y) {
 }
 
 // initialization.js
-
-$(document).ready(function() {
-    initialize();
-});
 
 function initialize(a) {
     window.rush = 1;
@@ -1992,21 +1834,18 @@ function initialize(a) {
         "#3498db": "rgb(151,201,235)",
         "#2ecc71": "rgb(150,227,183)"
     };
-
     window.rgbToHex = {
         "rgb(231,76,60)": "#e74c3c",
         "rgb(241,196,15)": "#f1c40f",
         "rgb(52,152,219)": "#3498db",
         "rgb(46,204,113)": "#2ecc71"
     };
-
     window.rgbColorsToTintedColors = {
         "rgb(231,76,60)": "rgb(241,163,155)",
         "rgb(241,196,15)": "rgb(246,223,133)",
         "rgb(52,152,219)": "rgb(151,201,235)",
         "rgb(46,204,113)": "rgb(150,227,183)"
     };
-
     window.hexagonBackgroundColor = 'rgb(236, 240, 241)';
     window.hexagonBackgroundColorClear = 'rgba(236, 240, 241, 0.5)';
     window.centerBlue = 'rgb(44,62,80)';
@@ -2019,7 +1858,6 @@ function initialize(a) {
     if (saveState !== "{}") {
         op = 1;
     }
-
     window.textShown = false;
     window.requestAnimFrame = (function() {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) {
@@ -2067,16 +1905,13 @@ function initialize(a) {
             creationSpeedModifier: 0.65,
             comboTime: 310
         };
-
     }
     if(/Android/i.test(navigator.userAgent)) {
         settings.os = "android";
     }
-
     if(navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i)){
         settings.os="ios";
     }
-
     window.canvas = document.getElementById('canvas');
     window.ctx = canvas.getContext('2d');
     window.trueCanvas = {
@@ -2084,14 +1919,12 @@ function initialize(a) {
         height: canvas.height
     };
     scaleCanvas();
-
     window.framerate = 60;
     window.history = {};
     window.score = 0;
     window.scoreAdditionCoeff = 1;
     window.prevScore = 0;
     window.numHighScores = 3;
-
     highscores = [];
     if (localStorage.getItem('highscores')) {
         try {
@@ -2127,7 +1960,6 @@ function initialize(a) {
         } else {
             $('#startBtn').on('mousedown', startBtnHandler);
         }
-
         document.addEventListener('touchmove', function(e) {
             e.preventDefault();
         }, false);
@@ -2137,41 +1969,31 @@ function initialize(a) {
             if (gameState == 1 || gameState == -1 || gameState === 0) localStorage.setItem("saveState", exportSaveState());
             else localStorage.setItem("saveState", "{}");
         });
-
         addKeyListeners();
-
         document.addEventListener("pause", handlePause, false);
         document.addEventListener("backbutton", handlePause, false);
         document.addEventListener("menubutton", handlePause, false); //menu button on android
-
         setTimeout(function() {
             if (settings.platform == "mobile") {
                 try {
                     document.body.removeEventListener('touchstart', handleTapBefore, false);
                 } catch (e) {
-
                 }
-
                 try {
                     document.body.removeEventListener('touchstart', handleTap, false);
                 } catch (e) {
-
                 }
-
                 document.body.addEventListener('touchstart', handleTapBefore, false);
             } else {
                 try {
                     document.body.removeEventListener('mousedown', handleClickBefore, false);
                 } catch (e) {
-
                 }
-
                 try {
                     document.body.removeEventListener('mousedown', handleClick, false);
                 } catch (e) {
 
                 }
-
                 document.body.addEventListener('mousedown', handleClickBefore, false);
             }
         }, 1);
@@ -2184,15 +2006,11 @@ function startBtnHandler() {
             try {
                 document.body.removeEventListener('touchstart', handleTapBefore, false);
             } catch (e) {
-
             }
-
             try {
                 document.body.removeEventListener('touchstart', handleTap, false);
             } catch (e) {
-
             }
-
             document.body.addEventListener('touchstart', handleTap, false);
         } else {
             try {
@@ -2200,23 +2018,17 @@ function startBtnHandler() {
             } catch (e) {
 
             }
-
             try {
                 document.body.removeEventListener('mousedown', handleClick, false);
             } catch (e) {
-
             }
-
             document.body.addEventListener('mousedown', handleClick, false);
         }
     }, 5);
-
     if (!canRestart) return false;
-
     if ($('#openSideBar').is(':visible')) {
         $('#openSideBar').fadeOut(150, "linear");
     }
-
     if (importing == 1) {
         init(1);
         checkVisualElements(0);
@@ -2242,7 +2054,6 @@ function handleClick(e) {
 function handleTapBefore(e) {
     var x = e.changedTouches[0].clientX;
     var y = e.changedTouches[0].clientY;
-
     if (x < 120 && y < 83 && $('.helpText').is(':visible')) {
         showHelp();
         return;
@@ -2252,9 +2063,12 @@ function handleTapBefore(e) {
 function handleClickBefore(e) {
     var x = e.clientX;
     var y = e.clientY;
-
     if (x < 120 && y < 83 && $('.helpText').is(':visible')) {
         showHelp();
         return;
     }
 }
+
+$(document).ready(function() {
+    initialize();
+});
