@@ -1,6 +1,6 @@
 // Hextris Lite - https://github.com/attogram/hextris-lite
 
-var hextris_lite_version = '2.1.1';
+var hextris_lite_version = '2.1.2';
 var pausable = true;
 var spd = 1;
 
